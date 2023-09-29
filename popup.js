@@ -10,6 +10,13 @@ function startGame(activeTab) {
     target: { tabId: activeTab.id },
     css: "body { background: transparent; }",
   });
+//tyla tyla
+
+
+
+
+
+
 
   chrome.scripting.executeScript({
     target: { tabId: activeTab.id },
