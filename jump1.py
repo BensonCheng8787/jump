@@ -13,6 +13,7 @@ PLAYER_COLOR = (0, 128, 255)
 PLATFORM_COLOR = (0, 255, 0)
 GRAVITY = 1
 JUMP_STRENGTH = 20
+vel = 5
 
 # Create the player
 player = pygame.Rect(WIDTH // 2, HEIGHT // 2, PLAYER_SIZE, PLAYER_SIZE)
@@ -29,6 +30,15 @@ screen = pygame.display.set_mode((WIDTH, HEIGHT))
 hwnd = pygame.display.get_wm_info()["window"]
 win32gui.SetWindowLong(hwnd, win32con.GWL_EXSTYLE, win32gui.GetWindowLong(hwnd, win32con.GWL_EXSTYLE) | win32con.WS_EX_LAYERED)
 win32gui.SetLayeredWindowAttributes(hwnd, win32api.RGB(255, 0, 128), 0, win32con.LWA_COLORKEY)
+
+##sideway movement
+def move_sideways(player, vel):
+    keys = pygame.key.get_pressed()
+    if keys[pygame.K_LEFT]:
+        player.x -= vel
+    if keys[pygame.K_RIGHT]:
+        player.x += vel
+
 
 # Game loop
 running = True
@@ -52,6 +62,8 @@ while running:
                 player.y = platform.y - PLAYER_SIZE
                 player_vy = 0
                 on_ground = True
+       # Move sideways
+    move_sideways(player, vel)
 
     # Draw everything
     screen.fill((255, 0, 128))  # Transparent background
