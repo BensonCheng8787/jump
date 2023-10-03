@@ -49,6 +49,7 @@ while running:
             running = False
         elif event.type == pygame.KEYDOWN and event.key == pygame.K_SPACE and on_ground:
             player_vy = -JUMP_STRENGTH
+            
 
     # Apply gravity
     player_vy += GRAVITY
