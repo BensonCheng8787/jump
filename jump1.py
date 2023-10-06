@@ -11,12 +11,10 @@ clock = pygame.time.Clock()
 
 # Set up some constants
 WIDTH, HEIGHT = 800, 600
-PLAYER_SIZE = 50
+PLAYER_SIZE = 30
 PLAYER_COLOR = (0, 128, 255)
 PLATFORM_COLOR = (0, 255, 0)
-GRAVITY = 0.001
-JUMP_STRENGTH = 20
-vel = 5
+GRAVITY = 1
 
 # Create the player
 player = Player(400, 100, PLAYER_SIZE, PLAYER_COLOR)
@@ -24,8 +22,12 @@ player = Player(400, 100, PLAYER_SIZE, PLAYER_COLOR)
 # Create the platforms
 platforms = [pygame.Rect(0, HEIGHT - 20, WIDTH, 20), pygame.Rect(WIDTH // 2, HEIGHT // 2, WIDTH // 4, 20)]
 
-# Create the window
-screen = pygame.display.set_mode((WIDTH, HEIGHT))
+# Get screen info
+screen_info = pygame.display.Info()
+screen_width, screen_height = screen_info.current_w, screen_info.current_h
+
+# Set up the display
+screen = pygame.display.set_mode((screen_width, screen_height))
 
 # Make the window transparent
 hwnd = pygame.display.get_wm_info()["window"]
@@ -37,14 +39,24 @@ running = True
 while running:
     # Event loop
     for event in pygame.event.get():
-        # Move sideways
-        player.move_sideways(5)
-        player.jump(JUMP_STRENGTH)
         if event.type == pygame.QUIT:
             running = False
-            
+
+    # Move sideways
+    keys = pygame.key.get_pressed()
+    player.move_sideways(keys)
+
+    # jumping
+    if (player.jumping):
+        player.jump(GRAVITY)
+    elif(keys[pygame.K_SPACE]):
+        player.jumping = False
+        player.jump(GRAVITY)
+     
     # Apply gravity
-    player.apply_gravity(GRAVITY)
+    if not player.jumping and not player.on_ground:
+        player.apply_gravity(GRAVITY)
+
     # Check for collisions
     player.check_collisions(platforms)
 
@@ -56,6 +68,8 @@ while running:
 
     # Update the display
     pygame.display.update()
+
+    clock.tick(60)
 
 # Quit Pygame
 pygame.quit()
