@@ -68,6 +68,7 @@ while running:
 
     # Update the display
     pygame.display.update()
+    print(player.on_ground, player.jumping)
 
     clock.tick(60)
 

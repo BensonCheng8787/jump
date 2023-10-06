@@ -32,13 +32,15 @@ class Player:
         self.Velocity -= gravity
 
     def check_collisions(self, platforms):
-        self.on_ground = False
         for platform in platforms:
             if self.rect.colliderect(platform):
-                if self.rect.y > 0:
+                if self.rect.y:
                     self.rect.y = platform.y - self.rect.height
                     self.on_ground = True
+                    self.jumping = False
                     self.Velocity = 0
+                else: 
+                    self.on_ground = False
 
             
 
