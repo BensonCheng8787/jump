@@ -7,5 +7,6 @@ class Plat:
         self.y = loc[1]
         self.x= loc[0]
         self.thickness = thickness
+        self.width = width
 
 

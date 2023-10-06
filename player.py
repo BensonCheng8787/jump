@@ -28,7 +28,7 @@ class Player:
     def move_sideways(self, keys):
         if keys[pygame.K_LEFT] and self.rect.x > 0:
             self.rect.x -= self.X_Vel
-        if keys[pygame.K_RIGHT] and self.rect.x < pygame.display.Info().current_w:
+        if keys[pygame.K_RIGHT] and self.rect.x+self.size < pygame.display.Info().current_w:
             self.rect.x += self.X_Vel
 
     def apply_gravity(self, gravity):
@@ -38,14 +38,15 @@ class Player:
     def check_collisions(self, platforms):
         for platform in platforms:
             ##print(platform.y)
-            if self.rect.colliderect(platform):
+            # hits top, hits bottom, hits left, hits right
+            if platform.y <= self.rect.y+self.size and platform.y+platform.thickness >= self.rect.y and platform.x <= self.rect.x+self.size and platform.x+platform.width >= self.rect.x:
                 if self.rect.y:
                     self.rect.y = platform.y - self.rect.height
                     self.on_ground = True
                     self.jumping = False
                     self.Velocity = 0
-                else: 
-                    self.on_ground = False
+            else: 
+                self.on_ground = False
 
             
 

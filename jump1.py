@@ -69,7 +69,7 @@ while running:
 
     # Update the display
     pygame.display.update()
-    print(player.on_ground, player.rect.y)
+    print(player.on_ground, player.rect.y, player.rect.x)
 
     clock.tick(60)
 
