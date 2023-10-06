@@ -3,6 +3,7 @@ import win32api
 import win32con
 import win32gui
 from player import Player
+from plat import Plat
 
 # Initialize Pygame
 pygame.init()
@@ -19,8 +20,8 @@ GRAVITY = 1
 # Create the player
 player = Player(400, 100, PLAYER_SIZE, PLAYER_COLOR)
 
-# Create the platforms
-platforms = [pygame.Rect(0, HEIGHT - 20, WIDTH, 20), pygame.Rect(WIDTH // 2, HEIGHT // 2, WIDTH // 4, 20)]
+# Create the platforms pygame.Rect(0, HEIGHT - 20, WIDTH+400, 20), pygame.Rect(WIDTH // 2, HEIGHT // 2, WIDTH // 4, 20)
+platforms = [Plat((0,HEIGHT), WIDTH, 20), Plat((WIDTH // 2, HEIGHT // 2), WIDTH // 4, 20)]
 
 # Get screen info
 screen_info = pygame.display.Info()
@@ -68,7 +69,7 @@ while running:
 
     # Update the display
     pygame.display.update()
-    print(player.on_ground, player.jumping)
+    print(player.on_ground, player.rect.y)
 
     clock.tick(60)
 
