@@ -2,7 +2,9 @@ import pygame
 
 class Player:
     def __init__(self, x, y, size, color):
+        # left, top, width, height
         self.rect = pygame.Rect(x, y, size, size)
+        self.size = size
         self.color = color
         self.on_ground = False
         self.JUMP_HEIGHT = 25     # jump height
@@ -15,6 +17,8 @@ class Player:
             self.Velocity = self.JUMP_HEIGHT
         self.jumping = True
         self.rect.y -= self.Velocity
+        if (self.rect.y <= 0):
+            self.rect.y = 1
         # gravity
         self.Velocity -= grav
         if self.Velocity < -self.JUMP_HEIGHT:
@@ -22,9 +26,9 @@ class Player:
         
 
     def move_sideways(self, keys):
-        if keys[pygame.K_LEFT]:
+        if keys[pygame.K_LEFT] and self.rect.x > 0:
             self.rect.x -= self.X_Vel
-        if keys[pygame.K_RIGHT]:
+        if keys[pygame.K_RIGHT] and self.rect.x < pygame.display.Info().current_w:
             self.rect.x += self.X_Vel
 
     def apply_gravity(self, gravity):
@@ -40,8 +44,8 @@ class Player:
                     self.on_ground = True
                     self.jumping = False
                     self.Velocity = 0
-            else: 
-                self.on_ground = False
+                else: 
+                    self.on_ground = False
 
             
 
