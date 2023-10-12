@@ -15,13 +15,13 @@ WIDTH, HEIGHT = 800, 600
 PLAYER_SIZE = 30
 PLAYER_COLOR = (0, 128, 255)
 PLATFORM_COLOR = (0, 255, 0)
-GRAVITY = 1
 
 # Create the player
 player = Player(400, 100, PLAYER_SIZE, PLAYER_COLOR)
 
 # Create the platforms pygame.Rect(0, HEIGHT - 20, WIDTH+400, 20), pygame.Rect(WIDTH // 2, HEIGHT // 2, WIDTH // 4, 20)
-platforms = [Plat((0,HEIGHT), WIDTH, 20), Plat((WIDTH // 2, HEIGHT // 2), WIDTH // 4, 20)]
+# plat takes in (x, y), width, thickness
+platforms = [Plat((0,HEIGHT), WIDTH, 20), Plat((400, 500), WIDTH // 4, 20), Plat((100, 250),20,600)]
 
 # Get screen info
 screen_info = pygame.display.Info()
@@ -43,23 +43,8 @@ while running:
         if event.type == pygame.QUIT:
             running = False
 
-    # Move sideways
     keys = pygame.key.get_pressed()
-    player.move_sideways(keys)
-
-    # jumping
-    if (player.jumping):
-        player.jump(GRAVITY)
-    elif(keys[pygame.K_SPACE]):
-        player.jumping = False
-        player.jump(GRAVITY)
-     
-    # Apply gravity
-    if not player.jumping and not player.on_ground:
-        player.apply_gravity(GRAVITY)
-
-    # Check for collisions
-    player.check_collisions(platforms)
+    player.movement(platforms, keys)
 
     # Draw everything
     screen.fill((255, 0, 128))  # Transparent background
@@ -69,7 +54,6 @@ while running:
 
     # Update the display
     pygame.display.update()
-    print(player.on_ground, player.rect.y, player.rect.x)
 
     clock.tick(60)
 

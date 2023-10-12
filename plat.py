@@ -9,4 +9,8 @@ class Plat:
         self.thickness = thickness
         self.width = width
 
+        # detects location of where the player is hitting it
+        self.collision_types = {'top': False, 'bottom': False, 'left': False, 'right': False}
+
+
 
