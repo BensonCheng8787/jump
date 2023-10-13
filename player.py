@@ -24,7 +24,7 @@ class Player:
             self.Velocity = self.JUMP_HEIGHT
         self.jumping = True
 
-        # top of the screen
+        # hits top of the screen
         if (self.rect.y <= 0):
             self.rect.y = 1
 
@@ -36,8 +36,7 @@ class Player:
 
         # collison with a platform above the player
         for plat in hit_list:
-            if self.rect.top <= plat.rect.bottom and self.rect.top >= plat.rect.top:
-                print(self.rect.top, plat.rect.bottom)
+            if self.rect.bottom >= plat.rect.bottom:
                 self.rect.top = plat.rect.bottom
                 self.collision_types['top'] = True
                 self.Velocity = 0
@@ -59,23 +58,20 @@ class Player:
             self.rect.x += self.X_Vel
             moving = "right"
 
-        
         # platfroms collided with
         hit_list = self.collided_plats(platforms)
-
 
         # collison with left or right sides of a platform
         for plat in hit_list:
             # moving left hits right side of a plat
-            if moving == "left" and self.rect.left >= plat.rect.right-1:
+            if moving == "left" and self.rect.right >= plat.rect.right:
                 self.rect.left = plat.rect.right
                 self.collision_types['left'] = True
-                print("hit", self.collision_types['left'])
             else:
                 self.collision_types['left'] = False
 
             # moving right hits left side of a plat
-            if moving == "right" and self.rect.right <= plat.rect.left+1:
+            if moving == "right" and self.rect.left <= plat.rect.left:
                 self.rect.right = plat.rect.left
                 self.collision_types['right'] = True
             else:
@@ -83,9 +79,6 @@ class Player:
 
     # accelerates downward until a platform is hit
     def apply_gravity(self, gravity, platforms):
-        # platfroms collided with
-        hit_list = self.collided_plats(platforms)
-
         # accelerate downward, jumps if velocity is positive
         if self.collision_types['bottom'] == False or self.jumping == True:
             # terminal Velocity
@@ -94,16 +87,18 @@ class Player:
             self.rect.y -= self.Velocity
             self.Velocity -= gravity
             # if the jump is over
-            if self.Velocity < -self.JUMP_HEIGHT:
+            if self.Velocity <= 0:
                 self.jumping = False
+
+        # platfroms collided with
+        hit_list = self.collided_plats(platforms)
         
         # collison with a platform below the player
         for plat in hit_list:
-            if self.rect.bottom >= plat.rect.top and self.rect.bottom <= plat.rect.bottom:
+            if self.rect.top <= plat.rect.top and not self.jumping:
                 self.rect.bottom = plat.rect.top + 1
-                self.jumping = False
-                self.Velocity = 0
                 self.collision_types['bottom'] = True
+                self.Velocity = 0
         self.check_free_fall(platforms)
             
  
@@ -124,7 +119,7 @@ class Player:
         # jumping
         if (self.jumping):
             self.jump(platforms)
-        elif(keys[pygame.K_SPACE]):
+        elif(keys[pygame.K_SPACE] and self.collision_types['bottom'] == True):
             self.jumping = False
             self.jump(platforms)
         
@@ -134,11 +129,7 @@ class Player:
         # Move sideways and check x collisions
         self.move_sideways(keys, platforms)
 
-        # self.check_free_fall(platforms)
-
-
-        
-        print(self.collision_types, self.jumping)
+        print(self.collision_types, self.jumping, self.Velocity)
 
 
     def draw(self, surface):
