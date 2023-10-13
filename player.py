@@ -144,3 +144,8 @@ class Player:
             self.collision_types['bottom'] = False
             self.collision_types['right'] = False
             self.collision_types['left'] = False
+
+    #resets to default
+    def reset(self):
+        self.rect.y = 100
+        self.rect.x= 400

@@ -54,7 +54,8 @@ while running:
 
     # Update the display
     pygame.display.update()
-
+    if(player.rect.y>pygame.display.Info().current_h):
+        player.reset()
     clock.tick(60)
 
 # Quit Pygame
