@@ -64,18 +64,19 @@ class Player:
         # collison with left or right sides of a platform
         for plat in hit_list:
             # moving left hits right side of a plat
-            if moving == "left" and self.rect.right >= plat.rect.right:
-                self.rect.left = plat.rect.right
-                self.collision_types['left'] = True
-            else:
-                self.collision_types['left'] = False
+            if (self.jumping==True or self.collision_types['top']) == False and self.collision_types['bottom']== False:
+                if moving == "left" and self.rect.right >= plat.rect.right:
+                    self.rect.left = plat.rect.right
+                    self.collision_types['left'] = True
+                else:
+                    self.collision_types['left'] = False
 
-            # moving right hits left side of a plat
-            if moving == "right" and self.rect.left <= plat.rect.left:
-                self.rect.right = plat.rect.left
-                self.collision_types['right'] = True
-            else:
-                self.collision_types['right'] = False
+                # moving right hits left side of a plat
+                if moving == "right" and self.rect.left <= plat.rect.left:
+                    self.rect.right = plat.rect.left
+                    self.collision_types['right'] = True
+                else:
+                    self.collision_types['right'] = False
 
     # accelerates downward until a platform is hit
     def apply_gravity(self, gravity, platforms):
