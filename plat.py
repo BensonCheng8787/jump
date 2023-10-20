@@ -12,5 +12,6 @@ class Plat:
         # detects location of where the player is hitting it
         self.collision_types = {'top': False, 'bottom': False, 'left': False, 'right': False}
 
-
+    def __str__(self):
+        return(True)
 

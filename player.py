@@ -1,4 +1,5 @@
 import pygame
+from plat import Plat
 
 class Player:
     def __init__(self, x, y, size, color):
@@ -11,14 +12,15 @@ class Player:
         self.Velocity = 0
         self.jumping = False
         self.gravity = 1
+        self.freeFall = True
 
         # location of a collision of the player with other objects
-        self.collision_types = {'top': False, 'bottom': False, 'left': False, 'right': False}
+        self.collision_types = {'top': Plat, 'bottom': Plat, 'left': Plat, 'right': Plat}
 
     # jump simulates gravity accelerating downward with initial velocity upward
     # collides with bottom of platforms
     def jump(self, platforms):
-        self.collision_types['bottom'] == False
+        self.collision_types['bottom'] == None
 
         if(not self.jumping):
             self.Velocity = self.JUMP_HEIGHT
@@ -28,20 +30,17 @@ class Player:
         if (self.rect.y <= 0):
             self.rect.y = 1
 
-        if self.Velocity < -self.JUMP_HEIGHT:
-            self.jumping = False
-
         # platfroms collided with
         hit_list = self.collided_plats(platforms)
 
         # collison with a platform above the player
         for plat in hit_list:
-            if self.rect.bottom >= plat.rect.bottom:
+            if (self.collision_types['left']!=plat and self.collision_types['right']!=plat) and self.rect.bottom >= plat.rect.bottom:
                 self.rect.top = plat.rect.bottom
-                self.collision_types['top'] = True
+                self.collision_types['top'] = plat
                 self.Velocity = 0
             else:
-                self.collision_types['top'] = False
+                self.collision_types['top'] = None
         self.check_free_fall(platforms)
 
 
@@ -64,24 +63,28 @@ class Player:
         # collison with left or right sides of a platform
         for plat in hit_list:
             # moving left hits right side of a plat
-            if (self.jumping==True or self.collision_types['top']) == False and self.collision_types['bottom']== False:
-                if moving == "left" and self.rect.right >= plat.rect.right:
-                    self.rect.left = plat.rect.right
-                    self.collision_types['left'] = True
-                else:
-                    self.collision_types['left'] = False
+            if (self.collision_types['left']!=plat and self.collision_types['right']!=plat) and self.rect.bottom >= plat.rect.bottom:
+                self.rect.top = plat.rect.bottom
+                self.collision_types['top'] = plat
+                self.Velocity = 0
+                break
+            if moving == "left" and self.rect.right >= plat.rect.right and (self.collision_types['top']!=plat and self.collision_types['bottom']!=plat):
+                self.rect.left = plat.rect.right
+                self.collision_types['left'] = plat
+            else:
+                self.collision_types['left'] = None
 
-                # moving right hits left side of a plat
-                if moving == "right" and self.rect.left <= plat.rect.left:
-                    self.rect.right = plat.rect.left
-                    self.collision_types['right'] = True
-                else:
-                    self.collision_types['right'] = False
+            # moving right hits left side of a plat
+            if moving == "right" and self.rect.left <= plat.rect.left and (self.collision_types['top']!=plat and self.collision_types['bottom']!=plat):
+                self.rect.right = plat.rect.left
+                self.collision_types['right'] = plat
+            else:
+                self.collision_types['right'] = None
 
     # accelerates downward until a platform is hit
     def apply_gravity(self, gravity, platforms):
         # accelerate downward, jumps if velocity is positive
-        if self.collision_types['bottom'] == False or self.jumping == True:
+        if self.collision_types['bottom'] == None or self.jumping == True:
             # terminal Velocity
             if self.Velocity <= -10:
                 self.Velocity = -10
@@ -91,14 +94,16 @@ class Player:
             if self.Velocity <= 0:
                 self.jumping = False
 
+
         # platfroms collided with
         hit_list = self.collided_plats(platforms)
         
         # collison with a platform below the player
         for plat in hit_list:
-            if self.rect.top <= plat.rect.top and not self.jumping:
+            ##print(self.rect.right, plat.rect.right, self.rect.right <= plat.rect.left)
+            if (self.collision_types['left']!=plat and self.collision_types['right']!=plat) and self.rect.top <= plat.rect.top and not self.jumping:
                 self.rect.bottom = plat.rect.top + 1
-                self.collision_types['bottom'] = True
+                self.collision_types['bottom'] = plat
                 self.Velocity = 0
         self.check_free_fall(platforms)
             
@@ -117,20 +122,20 @@ class Player:
         # self.collision_types['right'] = False
         # self.collision_types['left'] = False
 
-        # jumping
-        if (self.jumping):
-            self.jump(platforms)
-        elif(keys[pygame.K_SPACE] and self.collision_types['bottom'] == True):
-            self.jumping = False
-            self.jump(platforms)
+
         
         # Apply gravity
         self.apply_gravity(self.gravity, platforms)
 
         # Move sideways and check x collisions
         self.move_sideways(keys, platforms)
-
-        print(self.collision_types, self.jumping, self.Velocity)
+        # jumping
+        if (self.jumping):
+            self.jump(platforms)
+        elif(keys[pygame.K_SPACE] and self.collision_types['bottom'] != None):
+            self.jumping = False
+            self.jump(platforms)
+        ##print(self.collision_types, self.jumping, self.Velocity, self.freeFall)
 
 
     def draw(self, surface):
@@ -141,10 +146,13 @@ class Player:
         hit_list = self.collided_plats(platforms)
         # free fall
         if len(hit_list) == 0:
-            self.collision_types['top'] = False
-            self.collision_types['bottom'] = False
-            self.collision_types['right'] = False
-            self.collision_types['left'] = False
+            self.collision_types['top'] = None
+            self.collision_types['bottom'] = None
+            self.collision_types['right'] = None
+            self.collision_types['left'] = None
+            if(not self.jumping):self.freeFall = True
+        else:
+            self.freeFall = False
 
     #resets to default
     def reset(self):

@@ -21,7 +21,7 @@ player = Player(400, 100, PLAYER_SIZE, PLAYER_COLOR)
 
 # Create the platforms pygame.Rect(0, HEIGHT - 20, WIDTH+400, 20), pygame.Rect(WIDTH // 2, HEIGHT // 2, WIDTH // 4, 20)
 # plat takes in (x, y), width, thickness
-platforms = [Plat((0,HEIGHT), WIDTH, 20), Plat((400, 500), WIDTH // 4, 20), Plat((100, 200),50,300)]
+platforms = [Plat((0,HEIGHT), WIDTH, 20), Plat((400, 500), WIDTH // 4, 20), Plat((100, 200),50,300), Plat((500,200),20,500)]
 
 # Get screen info
 screen_info = pygame.display.Info()
