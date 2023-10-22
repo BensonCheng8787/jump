@@ -63,7 +63,7 @@ class Player:
         # collison with left or right sides of a platform
         for plat in hit_list:
             # moving left hits right side of a plat
-            if (self.collision_types['left']!=plat and self.collision_types['right']!=plat) and self.rect.bottom >= plat.rect.bottom:
+            if (self.freeFall == False and self.collision_types['left']!=plat and self.collision_types['right']!=plat) and self.rect.bottom >= plat.rect.bottom:
                 self.rect.top = plat.rect.bottom
                 self.collision_types['top'] = plat
                 self.Velocity = 0
