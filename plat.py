@@ -25,6 +25,11 @@ class Plat:
             hv = random.randint(0,2)
             xpos = random.randint(50,500)
             ypos = random.randint(50,700)
+            for i in range(0,c):
+                if course[i].x==ypos:
+                    ypos+=random.randint(10,20)
+                if course[i].y==xpos:
+                    xpos+=random.randint(20,30)
             if(hv%2==0):
                 ##height = random.randint(100,600)
                 width = random.randint(100,800)
