@@ -13,6 +13,7 @@ class Player:
         self.jumping = False
         self.gravity = 1
         self.freeFall = True
+        self.running = True
 
         # location of a collision of the player with other objects
         self.collision_types = {'top': Plat, 'bottom': Plat, 'left': Plat, 'right': Plat}
@@ -113,7 +114,10 @@ class Player:
         hit_list = []
         for plat in platforms:
             if self.rect.colliderect(plat.rect):
-                hit_list.append(plat)
+                if(plat.end==True):
+                    self.running=False
+                else:
+                    hit_list.append(plat)
         return hit_list
     
     def movement(self, platforms, keys):

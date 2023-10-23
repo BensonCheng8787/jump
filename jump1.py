@@ -22,7 +22,8 @@ player = Player(400, 100, PLAYER_SIZE, PLAYER_COLOR)
 # Create the platforms pygame.Rect(0, HEIGHT - 20, WIDTH+400, 20), pygame.Rect(WIDTH // 2, HEIGHT // 2, WIDTH // 4, 20)
 # plat takes in (x, y), width, thickness
 ##platforms = [Plat((0,HEIGHT), WIDTH, 20), Plat((400, 500), WIDTH // 4, 20), Plat((100, 200),50,300), Plat((500,200),20,500)]
-platforms = Plat.makeCourse(10)
+platforms = Plat.makeCourse(15)
+platforms.append(Plat((100,400),30,30,True))
 # Get screen info
 screen_info = pygame.display.Info()
 screen_width, screen_height = screen_info.current_w, screen_info.current_h
@@ -45,12 +46,15 @@ while running:
 
     keys = pygame.key.get_pressed()
     player.movement(platforms, keys)
-
+    running = player.running
     # Draw everything
     screen.fill((255, 0, 128))  # Transparent background
     player.draw(screen)
     for platform in platforms:
-        pygame.draw.rect(screen, PLATFORM_COLOR, platform)
+        if(platform.end==True):
+            pygame.draw.rect(screen,(255,0,0),platform)
+        else:
+            pygame.draw.rect(screen, PLATFORM_COLOR, platform)
 
     # Update the display
     pygame.display.update()
