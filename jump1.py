@@ -22,11 +22,15 @@ player = Player(400, 100, PLAYER_SIZE, PLAYER_COLOR)
 # Create the platforms pygame.Rect(0, HEIGHT - 20, WIDTH+400, 20), pygame.Rect(WIDTH // 2, HEIGHT // 2, WIDTH // 4, 20)
 # plat takes in (x, y), width, thickness
 ##platforms = [Plat((0,HEIGHT), WIDTH, 20), Plat((400, 500), WIDTH // 4, 20), Plat((100, 200),50,300), Plat((500,200),20,500)]
-platforms = Plat.makeCourse(15)
-platforms.append(Plat((100,400),30,30,True))
-# Get screen info
+
+##positive num to random generate, -1 for set course
 screen_info = pygame.display.Info()
 screen_width, screen_height = screen_info.current_w, screen_info.current_h
+platforms = Plat.makeCourse(25, screen_width, screen_height)
+platforms.append(Plat((100,400),30,30,True))
+# Get screen info
+
+
 
 # Set up the display
 screen = pygame.display.set_mode((screen_width, screen_height))

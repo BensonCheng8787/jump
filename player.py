@@ -30,6 +30,7 @@ class Player:
         # hits top of the screen
         if (self.rect.y <= 0):
             self.rect.y = 1
+            self.Velocity = 0
 
         # platfroms collided with
         hit_list = self.collided_plats(platforms)

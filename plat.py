@@ -20,26 +20,29 @@ class Plat:
 
     @staticmethod
     ##returns a course of #num platforms randomly generated.
-    def makeCourse(num):
+    def makeCourse(num, screenwidth, screenheight):
         course = []
-        for c in range(0,num):
-            hv = random.randint(0,2)
-            xpos = random.randint(50,500)
-            ypos = random.randint(50,700)
-            for i in range(0,c):
-                if course[i].x==ypos:
-                    ypos+=random.randint(10,20)
-                if course[i].y==xpos:
-                    xpos+=random.randint(20,30)
-            if(hv%2==0):
-                ##height = random.randint(100,600)
-                width = random.randint(100,800)
-                thick = random.randint(3,30)
-            else:
-                ##height = random.randint(100,600)
-                width = random.randint(10,80)
-                thick = random.randint(100,400)
-            course.append(Plat((xpos,ypos), width, thick, False))
+        if(num==-1):
+            course.append(Plat((100,200),600,20,False))
+        else:
+            for c in range(0,num):
+                hv = random.randint(0,2)
+                xpos = random.randint(50,screenwidth)
+                ypos = random.randint(50,screenheight)
+                for i in range(0,c):
+                    if course[i].x==ypos:
+                        ypos+=random.randint(10,20)
+                    if course[i].y==xpos:
+                        xpos+=random.randint(20,30)
+                if(hv%2==0):
+                    ##height = random.randint(100,600)
+                    width = random.randint(100,800)
+                    thick = random.randint(3,30)
+                else:
+                    ##height = random.randint(100,600)
+                    width = random.randint(10,80)
+                    thick = random.randint(100,400)
+                course.append(Plat((xpos,ypos), width, thick, False))
 
         return(course)
 
