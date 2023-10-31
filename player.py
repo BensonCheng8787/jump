@@ -5,6 +5,8 @@ class Player:
     def __init__(self, x, y, size, color):
         # left, top, width, height
         self.rect = pygame.Rect(x, y, size, size)
+        self.im = pygame.image.load("david.png")
+        self.im = pygame.transform.scale(self.im, (size,size))
         self.size = size
         self.color = color
         self.JUMP_HEIGHT = 15    # jump height
@@ -144,7 +146,9 @@ class Player:
 
 
     def draw(self, surface):
-        pygame.draw.rect(surface, self.color, self.rect)
+        surface.blit(self.im, (self.rect.x,self.rect.y))
+        # pygame.Surface.blit(self.im, surface, (self.rect.x,self.rect.y))
+        # pygame.draw.rect(surface, self.color, self.rect)
 
     def check_free_fall(self, platforms):
         # platfroms collided with

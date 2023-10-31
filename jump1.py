@@ -12,7 +12,7 @@ clock = pygame.time.Clock()
 
 # Set up some constants
 WIDTH, HEIGHT = 800, 600
-PLAYER_SIZE = 30
+PLAYER_SIZE = 60
 PLAYER_COLOR = (0, 128, 255)
 PLATFORM_COLOR = (0, 255, 0)
 
@@ -28,7 +28,7 @@ screen_info = pygame.display.Info()
 screen_width, screen_height = screen_info.current_w, screen_info.current_h
 platforms = Plat.makeCourse(25, screen_width, screen_height)
 platforms.append(Plat((100,400),30,30,True))
-# Get screen info
+# Get screen info 
 
 
 
