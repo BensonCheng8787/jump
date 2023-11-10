@@ -51,7 +51,7 @@ while running:
         elif event.type == pygame.KEYDOWN:
             if event.key == pygame.K_ESCAPE:
                 running = False
-                pygame.quit()
+                quit()
 
     keys = pygame.key.get_pressed()
     player.movement(platforms, keys)
@@ -72,13 +72,17 @@ while running:
         if(plat.end==True):
             pygame.draw.rect(screen,(255,0,0),plat)
         else:
-            pygame.draw.rect(screen, PLATFORM_COLOR, plat)
+            # the middle of the character has a 200 pixel radius, platforms only spawn in this circle/square
+            platform = player.in_range(plat)
+            if (platform != 0):
+                pygame.draw.rect(screen, PLATFORM_COLOR, plat)
 
     # Update the display
     pygame.display.update()
     if(player.rect.y>pygame.display.Info().current_h):
         player.reset()
     clock.tick(60)
+    
 if(player.ended):
     font = pygame.font.Font(None, 180)
     text = font.render("IT'S JOEOVER!!!! ", True, (255, 255, 255))

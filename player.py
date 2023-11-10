@@ -5,6 +5,7 @@ class Player:
     def __init__(self, x, y, size, color):
         # left, top, width, height
         self.rect = pygame.Rect(x, y, size, size)
+        self.circle = None
         self.im = pygame.image.load("sami.png")
         self.im = pygame.transform.scale(self.im, (size,size))
         self.size = size
@@ -125,6 +126,12 @@ class Player:
                     hit_list.append(plat)
         return hit_list
     
+    def in_range(self, plat):
+        # tiles collided 
+        if self.circle.colliderect(plat.rect):
+            return plat
+        return 0
+    
     def movement(self, platforms, keys):
         # self.collision_types['top'] = False
         # self.collision_types['bottom'] = False
@@ -148,7 +155,9 @@ class Player:
 
 
     def draw(self, surface):
+        self.circle = pygame.draw.circle(surface, self.color, (self.rect.x+30, self.rect.y+30), 200)
         surface.blit(self.im, (self.rect.x,self.rect.y))
+        
         # pygame.Surface.blit(self.im, surface, (self.rect.x,self.rect.y))
         # pygame.draw.rect(surface, self.color, self.rect)
 
