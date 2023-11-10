@@ -84,7 +84,7 @@ if(player.ended):
     text = font.render("IT'S JOEOVER!!!! ", True, (255, 255, 255))
     text_rect = text.get_rect()
     # Set the center of the rectangular object
-    text_rect.center = (1000, 500)
+    text_rect.center = (WIDTH, HEIGHT/2)
     # Draw the text onto the screen
     screen.blit(text, text_rect)
     # Update the display
