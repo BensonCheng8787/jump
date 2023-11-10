@@ -158,7 +158,7 @@ class Player:
 
 
     def draw(self, surface):
-        self.circle = pygame.draw.circle(surface, self.color, (self.rect.x+30, self.rect.y+30), 200)
+        self.circle = pygame.draw.circle(surface, (255, 0, 128), (self.rect.x+30, self.rect.y+30), 200)
         surface.blit(self.im[(self.step>5)], (self.rect.x,self.rect.y))
         
         # pygame.Surface.blit(self.im, surface, (self.rect.x,self.rect.y))
