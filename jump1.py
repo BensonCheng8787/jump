@@ -4,6 +4,7 @@ import win32con
 import win32gui
 from player import Player
 from plat import Plat
+import time
 
 # Initialize Pygame
 pygame.init()
@@ -26,7 +27,7 @@ player = Player(400, 100, PLAYER_SIZE, PLAYER_COLOR)
 ##positive num to random generate, -1 for set course
 screen_info = pygame.display.Info()
 screen_width, screen_height = screen_info.current_w, screen_info.current_h
-platforms = Plat.makeCourse(25, screen_width, screen_height)
+platforms = Plat.makeCourse(30, screen_width, screen_height)
 platforms.append(Plat((100,400),30,30,True))
 # Get screen info 
 
@@ -58,17 +59,38 @@ while running:
     # Draw everything
     screen.fill((255, 0, 128))  # Transparent background
     player.draw(screen)
-    for platform in platforms:
-        if(platform.end==True):
-            pygame.draw.rect(screen,(255,0,0),platform)
+    for plat in platforms:
+        # # Create a second surface
+        # s = pygame.Surface((plat.x, plat.y), pygame.SRCALPHA)  # Per-pixel alpha
+
+        # # Fill the second surface with white color and 50% transparency
+        # s.fill((0, 255, 0, 128))  # Notice the alpha value in the color
+
+        # # Blit the second surface onto the window
+        # screen.blit(s, (plat.x, plat.y))
+
+        if(plat.end==True):
+            pygame.draw.rect(screen,(255,0,0),plat)
         else:
-            pygame.draw.rect(screen, PLATFORM_COLOR, platform)
+            pygame.draw.rect(screen, PLATFORM_COLOR, plat)
 
     # Update the display
     pygame.display.update()
     if(player.rect.y>pygame.display.Info().current_h):
         player.reset()
     clock.tick(60)
+if(player.ended):
+    font = pygame.font.Font(None, 180)
+    text = font.render("IT'S JOEOVER!!!! ", True, (255, 255, 255))
+    text_rect = text.get_rect()
+    # Set the center of the rectangular object
+    text_rect.center = (1000, 500)
+    # Draw the text onto the screen
+    screen.blit(text, text_rect)
+    # Update the display
+    pygame.display.flip()
+    # Wait for 2 seconds
+    time.sleep(1)
 
 # Quit Pygame
 pygame.quit()

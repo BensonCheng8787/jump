@@ -5,7 +5,7 @@ class Player:
     def __init__(self, x, y, size, color):
         # left, top, width, height
         self.rect = pygame.Rect(x, y, size, size)
-        self.im = pygame.image.load("david.png")
+        self.im = pygame.image.load("sami.png")
         self.im = pygame.transform.scale(self.im, (size,size))
         self.size = size
         self.color = color
@@ -16,6 +16,7 @@ class Player:
         self.gravity = 1
         self.freeFall = True
         self.running = True
+        self.ended= False
 
         # location of a collision of the player with other objects
         self.collision_types = {'top': Plat, 'bottom': Plat, 'left': Plat, 'right': Plat}
@@ -119,6 +120,7 @@ class Player:
             if self.rect.colliderect(plat.rect):
                 if(plat.end==True):
                     self.running=False
+                    self.ended = True
                 else:
                     hit_list.append(plat)
         return hit_list
