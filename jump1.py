@@ -52,22 +52,23 @@ while running:
             if event.key == pygame.K_ESCAPE:
                 running = False
                 quit()
+            if event.key == pygame.K_n:
+                platforms = Plat.makeCourse(30, screen_width, screen_height)
+                platforms.append(Plat((100,400),30,30,True))
+                player.rect.x = 400
+                player.rect.y = 100
+            if event.key == pygame.K_r:
+                player.rect.x = 400
+                player.rect.y = 100
 
     keys = pygame.key.get_pressed()
     player.movement(platforms, keys)
     running = player.running
+    
     # Draw everything
     screen.fill((255, 0, 128))  # Transparent background
     player.draw(screen)
     for plat in platforms:
-        # # Create a second surface
-        # s = pygame.Surface((plat.x, plat.y), pygame.SRCALPHA)  # Per-pixel alpha
-
-        # # Fill the second surface with white color and 50% transparency
-        # s.fill((0, 255, 0, 128))  # Notice the alpha value in the color
-
-        # # Blit the second surface onto the window
-        # screen.blit(s, (plat.x, plat.y))
 
         if(plat.end==True):
             pygame.draw.rect(screen,(255,0,0),plat)
@@ -87,12 +88,16 @@ if(player.ended):
     font = pygame.font.Font(None, 180)
     text = font.render("IT'S JOEOVER!!!! ", True, (255, 255, 255))
     text_rect = text.get_rect()
+    
     # Set the center of the rectangular object
     text_rect.center = (WIDTH, HEIGHT/2)
+    
     # Draw the text onto the screen
     screen.blit(text, text_rect)
+    
     # Update the display
     pygame.display.flip()
+    
     # Wait for 2 seconds
     time.sleep(1)
 

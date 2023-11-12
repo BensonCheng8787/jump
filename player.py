@@ -71,12 +71,14 @@ class Player:
 
         # collison with left or right sides of a platform
         for plat in hit_list:
+            
+            # if (self.freeFall == False and self.collision_types['left']!=plat and self.collision_types['right']!=plat) and self.rect.bottom >= plat.rect.bottom:
+            #     self.rect.top = plat.rect.bottom
+            #     self.collision_types['top'] = plat
+            #     self.Velocity = 0
+            #     break
+            
             # moving left hits right side of a plat
-            if (self.freeFall == False and self.collision_types['left']!=plat and self.collision_types['right']!=plat) and self.rect.bottom >= plat.rect.bottom:
-                self.rect.top = plat.rect.bottom
-                self.collision_types['top'] = plat
-                self.Velocity = 0
-                break
             if moving == "left" and self.rect.right >= plat.rect.right and (self.collision_types['top']!=plat and self.collision_types['bottom']!=plat):
                 self.rect.left = plat.rect.right
                 self.collision_types['left'] = plat
@@ -136,24 +138,20 @@ class Player:
         return 0
     
     def movement(self, platforms, keys):
-        # self.collision_types['top'] = False
-        # self.collision_types['bottom'] = False
-        # self.collision_types['right'] = False
-        # self.collision_types['left'] = False
-
-
         
         # Apply gravity
         self.apply_gravity(self.gravity, platforms)
-
-        # Move sideways and check x collisions
-        self.move_sideways(keys, platforms)
+        
         # jumping
         if (self.jumping):
             self.jump(platforms)
         elif(keys[pygame.K_SPACE] and self.collision_types['bottom'] != None):
             self.jumping = False
             self.jump(platforms)
+
+        # Move sideways and check x collisions
+        self.move_sideways(keys, platforms)
+
         ##print(self.collision_types, self.jumping, self.Velocity, self.freeFall)
 
 
