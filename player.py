@@ -57,11 +57,11 @@ class Player:
         # moving left or right
         moving = "none"
         # movment
-        if keys[pygame.K_LEFT] and self.rect.x > 0:
+        if (keys[pygame.K_LEFT] or keys[pygame.K_a]) and self.rect.x > 0:
             self.rect.x -= self.X_Vel
             moving = "left"
             self.step+=1
-        elif keys[pygame.K_RIGHT] and self.rect.x+self.size < pygame.display.Info().current_w:
+        elif (keys[pygame.K_RIGHT] or keys[pygame.K_d]) and self.rect.x+self.size < pygame.display.Info().current_w:
             self.rect.x += self.X_Vel
             moving = "right"
             self.step+=1
@@ -145,7 +145,7 @@ class Player:
         # jumping
         if (self.jumping):
             self.jump(platforms)
-        elif(keys[pygame.K_SPACE] and self.collision_types['bottom'] != None):
+        elif((keys[pygame.K_SPACE] or keys[pygame.K_w]) and self.collision_types['bottom'] != None):
             self.jumping = False
             self.jump(platforms)
 
