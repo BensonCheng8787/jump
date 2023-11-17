@@ -2,18 +2,21 @@ import pygame
 import random
 
 class Plat:
-    def __init__(self,loc, width, thickness, end):
-        self.rect = pygame.Rect(loc[0], loc[1],width, thickness)
+    def __init__(self, loc, width, height, end):
+        self.color = (0, 255, 0)
+        self.rect = pygame.Rect(loc[0], loc[1], width, height)
         self.loc = loc
         self.y = loc[1]
         self.x= loc[0]
-        self.thickness = thickness
+        self.height = height
         self.width = width
         self.end = end
+        self.appear = False
+        self.current_plat = pygame.Rect(self.x + width//2, self.y + height//2, 1, 1)
+        self.current_plat.center = self.rect.center
 
         # detects location of where the player is hitting it
         self.collision_types = {'top': False, 'bottom': False, 'left': False, 'right': False}
-
 
     def __str__(self):
         return(True)
@@ -37,12 +40,12 @@ class Plat:
                 if(hv%2==0):
                     ##height = random.randint(100,600)
                     width = random.randint(100,800)
-                    thick = random.randint(3,30)
+                    height = random.randint(10,30)
                 else:
                     ##height = random.randint(100,600)
                     width = random.randint(10,80)
-                    thick = random.randint(100,400)
-                course.append(Plat((xpos,ypos), width, thick, False))
+                    height = random.randint(100,400)
+                course.append(Plat((xpos,ypos), width, height, False))
 
         return(course)
 
