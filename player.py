@@ -7,8 +7,9 @@ class Player:
         self.rect = pygame.Rect(x, y, size, size)
         self.circle = None
         self.im = []
-        self.im.append(pygame.transform.scale(pygame.image.load("david.png"), (size,size)))
-        self.im.append(pygame.transform.scale(pygame.image.load("sami.png"), (size,size)))
+        self.im.append(pygame.transform.scale(pygame.image.load("jawn0.png"), (size,size)))
+        self.im.append(pygame.transform.scale(pygame.image.load("jawn1.png"), (size,size)))
+        self.im.append(pygame.transform.scale(pygame.image.load("jawn2.png"), (size,size)))
         self.size = size
         self.color = color
         self.JUMP_HEIGHT = 15    # jump height
@@ -19,6 +20,7 @@ class Player:
         self.freeFall = True
         self.running = True
         self.ended= False
+        self.steppre = 0
         self.step=0
 
         # location of a collision of the player with other objects
@@ -60,12 +62,17 @@ class Player:
         if (keys[pygame.K_LEFT] or keys[pygame.K_a]) and self.rect.x > 0:
             self.rect.x -= self.X_Vel
             moving = "left"
-            self.step+=1
+            self.steppre+=1
         elif (keys[pygame.K_RIGHT] or keys[pygame.K_d]) and self.rect.x+self.size < pygame.display.Info().current_w:
             self.rect.x += self.X_Vel
             moving = "right"
-            self.step+=1
-        if(self.step>10): self.step = 0
+            self.steppre+=1
+        if(self.steppre>5): self.step = 1
+        if(self.steppre>10): self.step = 2
+        if(self.steppre>15): self.step = 1
+        if(self.steppre>20):
+            self.step =0
+            self.steppre =0
         # platfroms collided with
         hit_list = self.collided_plats(platforms)
 
@@ -157,7 +164,7 @@ class Player:
 
     def draw(self, surface):
         self.circle = pygame.draw.circle(surface, (255, 0, 128), (self.rect.x+30, self.rect.y+30), 200)
-        surface.blit(self.im[(self.step>5)], (self.rect.x,self.rect.y))
+        surface.blit(self.im[self.step], (self.rect.x,self.rect.y))
         
         # pygame.Surface.blit(self.im, surface, (self.rect.x,self.rect.y))
         # pygame.draw.rect(surface, self.color, self.rect)
