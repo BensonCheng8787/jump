@@ -70,7 +70,7 @@ while running:
                     selected = None
                 if event.key == pygame.K_n:
                     platforms = Plat.makeCourse(30, screen_width, screen_height)
-                    platforms.append(Plat((100,400),30,30,True))
+                    platforms.append(Plat((100,400),30,30,"end"))
                     player.reset()
                 if event.key == pygame.K_r:
                     player.reset()
@@ -83,7 +83,6 @@ while running:
         screen.fill((255, 0, 128))  # Transparent background
         player.draw(screen)
         for plat in platforms:
-            
             if(plat.type=="end"):
                 pygame.draw.rect(screen,(255,0,0),plat)
             else:
