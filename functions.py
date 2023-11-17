@@ -1,4 +1,5 @@
 import pygame
+from plat import Plat
 
 # appear function to make platforms and menus appear on screen
 def appear(screen, plat):
@@ -25,8 +26,7 @@ def disappear(screen, plat):
     plat.current_plat = pygame.Rect(plat.x + plat.width//2, plat.y + plat.height//2, plat.current_plat.width - plat.width//10, plat.current_plat.height - plat.height//10)
     plat.current_plat.center = plat.rect.center
     
-    print(plat.appear,plat.width//10, plat.height//10, "    ",plat.current_plat.x, plat.current_plat.y, "    ", plat.rect.x, plat.rect.y, "   ", plat.current_plat.center, plat.current_plat.center)
-
+    # print(plat.appear,plat.width//10, plat.height//10, "    ",plat.current_plat.x, plat.current_plat.y, "    ", plat.rect.x, plat.rect.y, "   ", plat.current_plat.center, plat.current_plat.center)
     
     # stops once it reaches 0
     if(plat.current_plat.width <= 1):
@@ -42,13 +42,12 @@ def disappear(screen, plat):
             
 
 # Function to draw button
-def draw_button(button_selected, screen, player):
-    button_w = 80
-    button_h = 22
-    dist_from_player = 10
+def draw_button(menus, button_selected, screen, player):
+    button_w = menus[0].width
+    button_h = menus[0].height
+    dist_from_player = 10   # also defined in jump1
     color1 = (0, 100, 255)
     color2 = (240, 60, 60)
-    
     
     # resume text:
     font = pygame.font.SysFont("comicsansms", button_h-1)
@@ -77,29 +76,39 @@ def draw_button(button_selected, screen, player):
     # quit_txt_rect.center = (player.rect.x+player.size/2, player.rect.y+dist_from_player+button_h/2+3)
     # screen.blit(quit_txt, quit_txt_rect)
     
+    # update locations
+    menus[0].rect.x = player.rect.x + player.size/2 - button_w/2
+    menus[0].rect.y = player.rect.y - button_h - dist_from_player
+    menus[1].rect.x = player.rect.x + player.size/2 - button_w/2
+    menus[1].rect.y =  player.rect.y + player.size + dist_from_player
+    menus[2].rect.x = player.rect.x - button_w - dist_from_player
+    menus[2].rect.y = player.rect.y + player.size/2 - button_h/2
+    menus[3].rect.x = player.rect.x + player.size + dist_from_player
+    menus[3].rect.y = player.rect.y + player.size/2 - button_h/2
+
     # resume button centered above player, switches color when selected
     if button_selected == "up":
-        pygame.draw.rect(screen, color2, pygame.Rect((player.rect.x + player.size/2) - button_w/2, (player.rect.y) - button_h - dist_from_player, button_w, button_h))
+        pygame.draw.rect(screen, color2, menus[0].rect)
     else:
-        pygame.draw.rect(screen, color1, pygame.Rect((player.rect.x + player.size/2) - button_w/2, (player.rect.y) - button_h - dist_from_player, button_w, button_h))
+        pygame.draw.rect(screen, color1, menus[0].rect)
     screen.blit(resume_txt, resume_txt_rect)
     
     # quit button centered below player, switches color when selected
     if button_selected == "down":
-        pygame.draw.rect(screen, color2, pygame.Rect((player.rect.x + player.size/2) - button_w/2, player.rect.y + player.size + dist_from_player, button_w, button_h))
+        pygame.draw.rect(screen, color2, menus[1].rect)
     else:
-        pygame.draw.rect(screen, color1, pygame.Rect((player.rect.x + player.size/2) - button_w/2, player.rect.y + player.size + dist_from_player, button_w, button_h))
+        pygame.draw.rect(screen, color1, menus[1].rect)
     screen.blit(quit_txt, quit_txt_rect)
 
     # options button centered left of player, switches color when selected
     if button_selected == "left":
-        pygame.draw.rect(screen, color2, pygame.Rect(player.rect.x - button_w - dist_from_player, player.rect.y + player.size/2 - button_h/2, button_w, button_h))
+        pygame.draw.rect(screen, color2, menus[2].rect)
     else:
-        pygame.draw.rect(screen, color1, pygame.Rect(player.rect.x - button_w - dist_from_player, player.rect.y + player.size/2 - button_h/2, button_w, button_h))
+        pygame.draw.rect(screen, color1, menus[2].rect)
     screen.blit(options_txt, options_txt_rect)
 
     #  button centered right of player, switches color when selected
     if button_selected == "right":
-        pygame.draw.rect(screen, color2, pygame.Rect((player.rect.x + player.size) + dist_from_player, player.rect.y + player.size/2 - button_h/2, button_w, button_h))
+        pygame.draw.rect(screen, color2, menus[3].rect)
     else:
-        pygame.draw.rect(screen, color1, pygame.Rect((player.rect.x + player.size) + dist_from_player, player.rect.y + player.size/2 - button_h/2, button_w, button_h))
+        pygame.draw.rect(screen, color1, menus[3].rect)
