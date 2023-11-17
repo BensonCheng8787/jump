@@ -124,7 +124,7 @@ class Player:
         hit_list = []
         for plat in platforms:
             if self.rect.colliderect(plat.rect):
-                if(plat.end==True):
+                if(plat.type=="end"):
                     self.running=False
                     self.ended = True
                 else:

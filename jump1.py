@@ -28,7 +28,6 @@ player = Player(400, 100, PLAYER_SIZE, PLAYER_COLOR)
 # platforms = [Plat((0,HEIGHT), WIDTH, 20, 0), Plat((400, 500), WIDTH // 4, 20,0), Plat((100, 200),50,300,0), Plat((500,200),20,500,0)]
 
 
-
 # Get screen info 
 screen_info = pygame.display.Info()
 screen_width, screen_height = screen_info.current_w, screen_info.current_h
@@ -36,7 +35,7 @@ screen_width, screen_height = screen_info.current_w, screen_info.current_h
 ##positive num to random generate, -1 for set course
 # test course 2
 platforms = Plat.makeCourse(30, screen_width, screen_height)
-platforms.append(Plat((100,400),30,30,True))
+platforms.append(Plat((100,400),30,30,"end"))
 
 # Set up the display
 screen = pygame.display.set_mode((screen_width, screen_height))
@@ -46,6 +45,15 @@ hwnd = pygame.display.get_wm_info()["window"]
 win32gui.SetWindowLong(hwnd, win32con.GWL_EXSTYLE, win32gui.GetWindowLong(hwnd, win32con.GWL_EXSTYLE) | win32con.WS_EX_LAYERED)
 win32gui.SetLayeredWindowAttributes(hwnd, win32api.RGB(255, 0, 128), 0, win32con.LWA_COLORKEY)
     
+# menu platforms
+button_w = 80
+button_h = 22
+dist_from_player = 10
+menus = [Plat(((player.rect.x + player.size/2) - button_w/2, (player.rect.y) - button_h - dist_from_player), button_w, button_h, "menu"),
+            Plat(((player.rect.x + player.size/2) - button_w/2, player.rect.y + player.size + dist_from_player), button_w, button_h, "menu"),
+            Plat((player.rect.x - button_w - dist_from_player, player.rect.y + player.size/2 - button_h/2), button_w, button_h, "menu"),
+            Plat(((player.rect.x + player.size) + dist_from_player, player.rect.y + player.size/2 - button_h/2), button_w, button_h, "menu")]
+
 # Game loop
 running = True
 paused = False
@@ -76,7 +84,7 @@ while running:
         player.draw(screen)
         for plat in platforms:
             
-            if(plat.end==True):
+            if(plat.type=="end"):
                 pygame.draw.rect(screen,(255,0,0),plat)
             else:
                 # the middle of the character has a 200 pixel radius, platforms only spawn in this circle/square
@@ -125,7 +133,7 @@ while running:
                         None
                     elif selected == "right":
                         None
-        draw_button(selected, screen, player)
+        draw_button(menus, selected, screen, player)
         pygame.display.update()
                     
     
