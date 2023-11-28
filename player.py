@@ -6,10 +6,14 @@ class Player:
         # left, top, width, height
         self.rect = pygame.Rect(x, y, size, size)
         self.circle = None
-        self.im = []
-        self.im.append(pygame.transform.scale(pygame.image.load("jawn0.png"), (size,size)))
-        self.im.append(pygame.transform.scale(pygame.image.load("jawn1.png"), (size,size)))
-        self.im.append(pygame.transform.scale(pygame.image.load("jawn2.png"), (size,size)))
+        self.imL = []
+        self.imR = []
+        self.imL.append(pygame.transform.scale(pygame.image.load("jawn0.png"), (size,size)))
+        self.imL.append(pygame.transform.scale(pygame.image.load("jawn1.png"), (size,size)))
+        self.imL.append(pygame.transform.scale(pygame.image.load("jawn2.png"), (size,size)))
+        self.imR.append(pygame.transform.scale(pygame.image.load("jawn00.png"), (size,size)))
+        self.imR.append(pygame.transform.scale(pygame.image.load("jawn01.png"), (size,size)))
+        self.imR.append(pygame.transform.scale(pygame.image.load("jawn02.png"), (size,size)))
         self.size = size
         self.color = color
         self.JUMP_HEIGHT = 15    # jump height
@@ -22,6 +26,7 @@ class Player:
         self.ended= False
         self.steppre = 0
         self.step=0
+        self.moving = "none"
 
         # location of a collision of the player with other objects
         self.collision_types = {'top': Plat, 'bottom': Plat, 'left': Plat, 'right': Plat}
@@ -57,15 +62,15 @@ class Player:
     # includes x collisons with platforms
     def move_sideways(self, keys, platforms):
         # moving left or right
-        moving = "none"
+        self.moving = "none"
         # movment
         if (keys[pygame.K_LEFT] or keys[pygame.K_a]) and self.rect.x > 0:
             self.rect.x -= self.X_Vel
-            moving = "left"
+            self.moving = "left"
             self.steppre+=1
         elif (keys[pygame.K_RIGHT] or keys[pygame.K_d]) and self.rect.x+self.size < pygame.display.Info().current_w:
             self.rect.x += self.X_Vel
-            moving = "right"
+            self.moving = "right"
             self.steppre+=1
         if(self.steppre>5): self.step = 1
         if(self.steppre>10): self.step = 2
@@ -86,14 +91,14 @@ class Player:
             #     break
             
             # moving left hits right side of a plat
-            if moving == "left" and self.rect.right >= plat.rect.right and (self.collision_types['top']!=plat and self.collision_types['bottom']!=plat):
+            if self.moving == "left" and self.rect.right >= plat.rect.right and (self.collision_types['top']!=plat and self.collision_types['bottom']!=plat):
                 self.rect.left = plat.rect.right
                 self.collision_types['left'] = plat
             else:
                 self.collision_types['left'] = None
 
             # moving right hits left side of a plat
-            if moving == "right" and self.rect.left <= plat.rect.left and (self.collision_types['top']!=plat and self.collision_types['bottom']!=plat):
+            if self.moving == "right" and self.rect.left <= plat.rect.left and (self.collision_types['top']!=plat and self.collision_types['bottom']!=plat):
                 self.rect.right = plat.rect.left
                 self.collision_types['right'] = plat
             else:
@@ -164,7 +169,14 @@ class Player:
 
     def draw(self, surface):
         self.circle = pygame.draw.circle(surface, (255, 0, 128), (self.rect.x+30, self.rect.y+30), 200)
-        surface.blit(self.im[self.step], (self.rect.x,self.rect.y))
+        if(self.moving=="left"):
+            surface.blit(self.imL[self.step], (self.rect.x,self.rect.y))
+        elif(self.moving=="right"):
+            surface.blit(self.imR[self.step], (self.rect.x,self.rect.y))
+        else:
+            surface.blit(self.imL[0], (self.rect.x,self.rect.y))
+        # self.circle = pygame.draw.circle(surface, (255, 0, 128), (self.rect.x+30, self.rect.y+30), 200)
+        # surface.blit(self.imL[self.step], (self.rect.x,self.rect.y))
         
         # pygame.Surface.blit(self.im, surface, (self.rect.x,self.rect.y))
         # pygame.draw.rect(surface, self.color, self.rect)
