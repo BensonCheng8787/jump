@@ -2,8 +2,8 @@ import pygame
 import random
 
 class Plat:
-    def __init__(self, loc, width, height, type):
-        self.color = (0, 255, 0)
+    def __init__(self, loc, width, height, type, color):
+        self.color = color
         self.rect = pygame.Rect(loc[0], loc[1], width, height)
         self.loc = loc
         self.y = loc[1]
@@ -26,7 +26,7 @@ class Plat:
     def makeCourse(num, screenwidth, screenheight):
         course = []
         if(num==-1):
-            course.append(Plat((100,200),600,20,"norm"))
+            course.append(Plat((100,200),600,20,"norm",(0, 255, 0)))
         else:
             for c in range(0,num):
                 hv = random.randint(0,2)
@@ -45,7 +45,7 @@ class Plat:
                     ##height = random.randint(100,600)
                     width = random.randint(10,80)
                     height = random.randint(100,400)
-                course.append(Plat((xpos,ypos), width, height, "norm"))
+                course.append(Plat((xpos,ypos), width, height, "norm",(0, 255, 0)))
 
         return(course)
 
