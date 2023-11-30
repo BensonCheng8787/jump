@@ -18,7 +18,7 @@ def appear(screen, plat):
         plat.appear = True
         
     plat.current_plat.center = plat.rect.center
-    print(plat.appear,plat.width//10, plat.height//10,"    ", plat.current_plat.width, plat.current_plat.height,"    ",plat.current_plat.x, plat.current_plat.y, "    ", plat.rect.x, plat.rect.y, "   ", plat.current_plat.center, plat.rect.center)
+    # print(plat.appear,plat.width//10, plat.height//10,"    ", plat.current_plat.width, plat.current_plat.height,"    ",plat.current_plat.x, plat.current_plat.y, "    ", plat.rect.x, plat.rect.y, "   ", plat.current_plat.center, plat.rect.center)
     pygame.draw.rect(screen, plat.color, plat.current_plat)    
     
 # disappear function to make platforms and menus disappear 
@@ -74,39 +74,39 @@ def draw_button(menus, button_selected, screen, player, dis, clicked):
     menus[6].rect.x = menus[2].rect.x - button_w + dist_from_player
     menus[6].rect.y = menus[2].rect.y + button_h + dist_from_player
     
+    text_size = int(button_h//1.3)
     # resume text:
-    font = pygame.font.SysFont("comicsansms", button_h-1)
+    font = pygame.font.SysFont("comicsansms", text_size)
     resume_txt = font.render("resume", True, (255, 255, 255))
     resume_txt_rect = resume_txt.get_rect()
-    resume_txt_rect.center = (player.rect.x+player.size/2, player.rect.y-dist_from_player-button_h/2-4)
+    resume_txt_rect.center = menus[0].rect.center
     
     # quit text:
-    font = pygame.font.SysFont("comicsansms", button_h-1)
+    font = pygame.font.SysFont("comicsansms", text_size)
     quit_txt = font.render("quit", True, (255, 255, 255))
     quit_txt_rect = quit_txt.get_rect()
-    quit_txt_rect.center = (player.rect.x+player.size/2, player.rect.y+player.size+dist_from_player+button_h/2-4)
+    quit_txt_rect.center = menus[1].rect.center
     
     # options text:
-    font = pygame.font.SysFont("comicsansms", button_h-1)
+    font = pygame.font.SysFont("comicsansms", text_size)
     options_txt = font.render("options", True, (255, 255, 255))
     options_txt_rect = options_txt.get_rect()
-    options_txt_rect.center = (player.rect.x-button_w/2-dist_from_player, player.rect.y+player.size/2-3)
-    
+    options_txt_rect.center = menus[2].rect.center
     # options Top text:
-    font = pygame.font.SysFont("comicsansms", button_h-1)
-    options1_txt = font.render("course 1", True, (255, 255, 255))
+    font = pygame.font.SysFont("comicsansms", text_size)
+    options1_txt = font.render("course1", True, (255, 255, 255))
     options1_txt_rect = options1_txt.get_rect()
     options1_txt_rect.center = menus[4].rect.center
     
     # options Mid text:
-    font = pygame.font.SysFont("comicsansms", button_h-1)
-    options2_txt = font.render("course 2", True, (255, 255, 255))
+    font = pygame.font.SysFont("comicsansms", text_size)
+    options2_txt = font.render("course2", True, (255, 255, 255))
     options2_txt_rect = options2_txt.get_rect()
     options2_txt_rect.center = menus[5].rect.center
     
     # options Bottom text:
-    font = pygame.font.SysFont("comicsansms", button_h-1)
-    options3_txt = font.render("course 3", True, (255, 255, 255))
+    font = pygame.font.SysFont("comicsansms", text_size)
+    options3_txt = font.render("course3", True, (255, 255, 255))
     options3_txt_rect = options3_txt.get_rect()
     options3_txt_rect.center = menus[6].rect.center
     
@@ -188,3 +188,53 @@ def draw_button(menus, button_selected, screen, player, dis, clicked):
         screen.blit(options2_txt, options2_txt_rect)
         screen.blit(options3_txt, options3_txt_rect)
         
+def Main_Course():
+    PLATFORM_COLOR = (0, 255, 0)
+    TST = (0, 0, 255)
+    PLAT_SIZE = 18
+    
+    # Get screen info 
+    screen_info = pygame.display.Info()
+    screen_width, screen_height = screen_info.current_w, screen_info.current_h
+    
+    # plat takes in (x, y), width, thickness, type, color
+    # sec1
+    course = [Plat((screen_width-200,screen_height-60), 200, PLAT_SIZE, "norm",PLATFORM_COLOR),#0
+              Plat((screen_width-240,screen_height-115), 75, PLAT_SIZE, "norm",PLATFORM_COLOR)]#1
+    course.append(Plat((course[1].x-100,course[1].y-30), 65, PLAT_SIZE, "norm",PLATFORM_COLOR))#2
+    course.append(Plat((course[2].x-100,course[2].y-30), 65, PLAT_SIZE, "norm",PLATFORM_COLOR))#3
+    course.append(Plat((course[3].x+100,course[3].y-60), 65, PLAT_SIZE, "norm",PLATFORM_COLOR))#4
+    course.append(Plat((course[4].x+120,course[4].y+20), 88, PLAT_SIZE, "norm",PLATFORM_COLOR))#5
+    course.append(Plat((course[5].x+140,course[5].y-40), 65, PLAT_SIZE, "norm",PLATFORM_COLOR))#6
+    # sec2
+    course.append(Plat((course[6].x-150,course[6].y-50), 100, PLAT_SIZE, "norm",PLATFORM_COLOR))#7
+    course.append(Plat((course[7].x,course[7].y-100), PLAT_SIZE, 100, "norm",PLATFORM_COLOR))#8
+    course.append(Plat((course[8].x+PLAT_SIZE,course[8].y+40), 30, PLAT_SIZE, "norm",PLATFORM_COLOR))#9
+    course.append(Plat((course[8].x-180,course[8].y), 100, PLAT_SIZE, "norm",PLATFORM_COLOR))#10
+    course.append(Plat((course[8].x+100,course[8].y), 130, PLAT_SIZE, "norm",PLATFORM_COLOR))#11
+    course.append(Plat((course[11].x+115,course[11].y-140), PLAT_SIZE, 140, "norm",PLATFORM_COLOR))#12
+    course.append(Plat((course[12].x-20,course[12].y+80), 30, PLAT_SIZE, "norm",PLATFORM_COLOR))#13
+    course.append(Plat((course[13].x-70,course[13].y-110), PLAT_SIZE, 130, "norm",PLATFORM_COLOR))#14
+    course.append(Plat((course[14].x+15,course[14].y+65), 20, PLAT_SIZE, "norm",PLATFORM_COLOR))#15
+    course.append(Plat((course[14].x-40,course[14].y-2), 58, PLAT_SIZE, "norm",PLATFORM_COLOR))#16
+    course.append(Plat((course[16].x-70,course[16].y+30), 35, PLAT_SIZE, "norm",PLATFORM_COLOR))#17
+    course.append(Plat((course[17].x-70,course[17].y+30), 40, PLAT_SIZE, "norm",PLATFORM_COLOR))#18
+    # sec3
+    course.append(Plat((course[18].x-60,course[18].y-30), 20, PLAT_SIZE, "norm",PLATFORM_COLOR))#19
+    course.append(Plat((course[19].x-PLAT_SIZE,course[19].y-40), PLAT_SIZE, 40+PLAT_SIZE, "norm",PLATFORM_COLOR))#20
+    course.append(Plat((course[20].x+80,course[20].y-30), 30, PLAT_SIZE, "norm",PLATFORM_COLOR))#21
+    course.append(Plat((course[21].x+80,course[21].y-35), 35, PLAT_SIZE, "norm",PLATFORM_COLOR))#22
+    course.append(Plat((course[22].x+70,course[22].y-30), PLAT_SIZE, 40, "norm",PLATFORM_COLOR))#23
+    course.append(Plat((course[23].x+55,course[23].y-30), 20, PLAT_SIZE, "norm",PLATFORM_COLOR))#24
+    course.append(Plat((course[24].x-70,course[24].y-40), 25, PLAT_SIZE, "norm",PLATFORM_COLOR))#25
+    course.append(Plat((course[25].x-70,course[25].y-40), 20, PLAT_SIZE, "norm",PLATFORM_COLOR))#26
+    course.append(Plat((course[26].x-60,course[26].y-40), PLAT_SIZE, PLAT_SIZE, "norm",PLATFORM_COLOR))#27
+    course.append(Plat((course[27].x-50,course[27].y+40), PLAT_SIZE, PLAT_SIZE, "norm",PLATFORM_COLOR))#28
+    course.append(Plat((course[28].x-80,course[28].y+50),PLAT_SIZE,PLAT_SIZE,"end", (255,0,0))) #29 end
+
+
+
+
+    
+
+    return course

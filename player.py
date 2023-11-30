@@ -6,6 +6,7 @@ class Player:
         # left, top, width, height
         self.rect = pygame.Rect(x, y, size, size)
         self.circle = None
+        self.cirRad = 200
         self.imL = []
         self.imR = []
         self.imL.append(pygame.transform.scale(pygame.image.load("jawn0.png"), (size,size)))
@@ -16,7 +17,7 @@ class Player:
         self.imR.append(pygame.transform.scale(pygame.image.load("jawn02.png"), (size,size)))
         self.size = size
         self.color = color
-        self.JUMP_HEIGHT = 15    # jump height
+        self.JUMP_HEIGHT = 12    # jump height
         self.X_Vel = 3            # horizontal movement
         self.Velocity = 0
         self.jumping = False
@@ -168,7 +169,7 @@ class Player:
 
 
     def draw(self, surface):
-        self.circle = pygame.draw.circle(surface, (255, 0, 128), (self.rect.x+30, self.rect.y+30), 200)
+        self.circle = pygame.draw.circle(surface, (255, 0, 127), (self.rect.x+self.size//2, self.rect.y+self.size//2), self.cirRad)
         if(self.moving=="left"):
             surface.blit(self.imL[self.step], (self.rect.x,self.rect.y))
         elif(self.moving=="right"):
@@ -195,6 +196,14 @@ class Player:
             self.freeFall = False
 
     #resets to default
-    def reset(self):
-        self.rect.y = 100
-        self.rect.x= 400
+    def reset(self, course):
+        if course == 1 or course == 2:
+            self.rect.y = 100
+            self.rect.x= 400
+        elif course == 3:
+            screen_info = pygame.display.Info()
+            self.rect.x = screen_info.current_w-50
+            self.rect.y = screen_info.current_h-130
+        
+    def change_jump(self, height):
+        self.JUMP_HEIGHT = height

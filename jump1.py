@@ -14,34 +14,23 @@ clock = pygame.time.Clock()
 
 # Set up some constants
 WIDTH, HEIGHT = 800, 600
-PLAYER_SIZE = 60
 PLAYER_COLOR = (0, 128, 255)
-PLATFORM_COLOR = (0, 255, 0)
 
 # Get screen info 
 screen_info = pygame.display.Info()
 screen_width, screen_height = screen_info.current_w, screen_info.current_h
 
-# Create the player
-player = Player(400, 100, PLAYER_SIZE, PLAYER_COLOR)
-
-# Create the platforms pygame.Rect(0, HEIGHT - 20, WIDTH+400, 20), pygame.Rect(WIDTH // 2, HEIGHT // 2, WIDTH // 4, 20)
-# plat takes in (x, y), width, thickness, type, color
-# ===========================test course 1====================================
-# platforms = [Plat((0,HEIGHT), WIDTH, 20, "norm",(0, 255, 0)), Plat((400, 500), WIDTH // 4, 20,"norm",(0, 255, 0)), Plat((100, 200),50,300,"norm",(0, 255, 0)), Plat((500,200),20,500,"norm",(0, 255, 0))]
-
-##positive num to random generate, -1 for set course
-# ===========================test course 2====================================
-platforms = Plat.makeCourse(30, screen_width, screen_height)
-
-# ===========================test course 3====================================
-
-
-# add end block
-platforms.append(Plat((100,400),30,30,"end", (255,0,0)))
-
 # Set up the display
 screen = pygame.display.set_mode((screen_width, screen_height))
+
+# Create the player
+player = Player(0, 0, 30, PLAYER_COLOR)
+player.change_jump(11)
+player.cirRad = 85
+
+# make main course
+main_course = Main_Course()
+platforms = main_course
 
 # Make the window transparent
 hwnd = pygame.display.get_wm_info()["window"]
@@ -50,24 +39,25 @@ win32gui.SetLayeredWindowAttributes(hwnd, win32api.RGB(255, 0, 128), 0, win32con
     
 # menu platforms
 button_w = 80
-button_h = 22
+button_h = 28
 dist_from_player = 10
-# locations updated in draw button function
-menus = [Plat((0, 0), button_w, button_h, "menu", (0, 100, 255)),
-            Plat((0, 0), button_w, button_h, "menu", (0, 100, 255)),
-            Plat((0, 0), button_w, button_h, "menu", (0, 100, 255)),
-            Plat((0, 0), button_w, button_h, "menu", (0, 100, 255)),
-            Plat((0, 0), button_w, button_h, "menu", (0, 100, 255)),
-            Plat((0, 0), button_w, button_h, "menu", (0, 100, 255)),
-            Plat((0, 0), button_w, button_h, "menu", (0, 100, 255))]
 
-# Game loop
+# locations updated in draw button function
+menus = []
+for i in range(7):
+    menus.append(Plat((0, 0), button_w, button_h, "menu", (0, 100, 255)))
+
+# Game variables
 running = True
 paused = False
 dis = False
 clicked = None
 selected = None
+course = 3
 appearing_timer = 0
+player.reset(course)
+
+# main loop
 while running:
     if not paused:
         # Event loop
@@ -78,12 +68,12 @@ while running:
                 if event.key == pygame.K_ESCAPE:
                     paused = True
                     selected = None
-                if event.key == pygame.K_n:
+                if event.key == pygame.K_n and course == 2:
                     platforms = Plat.makeCourse(30, screen_width, screen_height)
                     platforms.append(Plat((100,400),30,30,"end",(255,0,0)))
-                    player.reset()
+                    player.reset(course)
                 if event.key == pygame.K_r:
-                    player.reset()
+                    player.reset(course)
 
         keys = pygame.key.get_pressed()
         player.movement(platforms, keys)
@@ -93,25 +83,21 @@ while running:
         screen.fill((255, 0, 128))  # Transparent background
         player.draw(screen)
         for plat in platforms:
-            if(plat.type=="end"):
-                pygame.draw.rect(screen,plat.color,plat)
-            else:
-                # the middle of the character has a 200 pixel radius, platforms only spawn in this circle/square
-                platform = player.in_range(plat)
-                if (platform != 0):
-                    # if platform is inrange and not fully appeared yet
-                    if (plat.appear == False):
-                        appear(screen, plat)
-                    else:
-                        pygame.draw.rect(screen, plat.color, plat.rect)
-                elif plat.appear == True:
-                    disappear(screen, plat)
+            # the middle of the character has a 200 pixel radius, platforms only spawn in this circle/square
+            platform = player.in_range(plat)
+            if (platform != 0):
+                # if platform is inrange and not fully appeared yet
+                if (plat.appear == False):
+                    appear(screen, plat)
                 else:
-                    plat.current_plat = pygame.Rect(plat.x + plat.width//2, plat.y + plat.height//2, 1, 1)
-                    plat.current_plat.center = plat.rect.center
-
+                    pygame.draw.rect(screen, plat.color, plat.rect)
+            elif plat.appear == True:
+                disappear(screen, plat)
+            else:
+                plat.current_plat = pygame.Rect(plat.x + plat.width//2, plat.y + plat.height//2, 1, 1)
+                plat.current_plat.center = plat.rect.center
         if(player.rect.y>pygame.display.Info().current_h):
-            player.reset()
+            player.reset(course)
         clock.tick(60)
 
     if paused:
@@ -156,6 +142,7 @@ while running:
                 # if the selected button is pressed
                 if event.key == pygame.K_RETURN:
                     if selected == "up":
+                        # unpasue
                         dis = True
                         clicked = None
                         selected = None
@@ -167,11 +154,54 @@ while running:
                         clicked = "left"
                     elif selected == "right":
                         None
-
+                    elif selected == "leftTop":
+                        course = 1
+                        # plat takes in (x, y), width, thickness, type, color
+                        platforms = [Plat((0,HEIGHT), WIDTH, 20, "norm",(0, 255, 0)), Plat((400, 500), WIDTH // 4, 20,"norm",(0, 255, 0)), Plat((100, 200),50,300,"norm",(0, 255, 0)), Plat((500,200),20,500,"norm",(0, 255, 0))]
+                        player = Player(0, 0, 60, PLAYER_COLOR)
+                        player.change_jump(15)
+                        player.reset(course)
+                        
+                        # unpause
+                        dis = True
+                        clicked = None
+                        selected = None
+                        for menu in menus:
+                            menu.color = (0, 100, 255)
+                    elif selected == "leftMid":
+                        course = 2
+                        ##positive num to random generate
+                        platforms = Plat.makeCourse(30, screen_width, screen_height)                   
+                        # add end block
+                        platforms.append(Plat((100,400),30,30,"end", (255,0,0)))
+                        player = Player(0, 0, 60, PLAYER_COLOR)
+                        player.change_jump(15)
+                        player.reset(course)
+                        
+                        # unpause
+                        dis = True
+                        clicked = None
+                        selected = None
+                        for menu in menus:
+                            menu.color = (0, 100, 255)
+                    elif selected == "leftBotm":
+                        course = 3
+                        platforms = main_course
+                        player = Player(0, 0, 30, PLAYER_COLOR)
+                        player.cirRad = 60
+                        player.change_jump(12)
+                        player.reset(course)
+                        
+                        # unpause
+                        dis = True
+                        clicked = None
+                        selected = None
+                        for menu in menus:
+                            menu.color = (0, 100, 255)
+                        
         draw_button(menus, selected, screen, player, dis, clicked)
         
         if(menus[3].appear == False and dis == True):
-            print("dis")
             dis = False
             paused = False
             
