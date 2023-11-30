@@ -169,7 +169,7 @@ class Player:
 
 
     def draw(self, surface):
-        self.circle = pygame.draw.circle(surface, (255, 0, 127), (self.rect.x+self.size//2, self.rect.y+self.size//2), self.cirRad)
+        self.circle = pygame.draw.circle(surface, (255, 0, 128), (self.rect.x+self.size//2, self.rect.y+self.size//2), self.cirRad)
         if(self.moving=="left"):
             surface.blit(self.imL[self.step], (self.rect.x,self.rect.y))
         elif(self.moving=="right"):
