@@ -204,15 +204,15 @@ def Main_Course():
     course.append(Plat((course[1].x-100,course[1].y-30), 65, PLAT_SIZE, "norm",PLATFORM_COLOR))#2
     course.append(Plat((course[2].x-100,course[2].y-30), 65, PLAT_SIZE, "norm",PLATFORM_COLOR))#3
     course.append(Plat((course[3].x+100,course[3].y-60), 65, PLAT_SIZE, "norm",PLATFORM_COLOR))#4
-    course.append(Plat((course[4].x+120,course[4].y+20), 88, PLAT_SIZE, "norm",PLATFORM_COLOR))#5
-    course.append(Plat((course[5].x+140,course[5].y-40), 65, PLAT_SIZE, "norm",PLATFORM_COLOR))#6
+    course.append(Plat((course[4].x+120,course[4].y+20), 90, PLAT_SIZE, "norm",PLATFORM_COLOR))#5
+    course.append(Plat((course[5].x+130,course[5].y-40), 65, PLAT_SIZE, "norm",PLATFORM_COLOR))#6
     # sec2
-    course.append(Plat((course[6].x-150,course[6].y-50), 100, PLAT_SIZE, "norm",PLATFORM_COLOR))#7
+    course.append(Plat((course[6].x-130,course[6].y-50), 90, PLAT_SIZE, "norm",PLATFORM_COLOR))#7
     course.append(Plat((course[7].x,course[7].y-100), PLAT_SIZE, 100, "norm",PLATFORM_COLOR))#8
     course.append(Plat((course[8].x+PLAT_SIZE,course[8].y+40), 30, PLAT_SIZE, "norm",PLATFORM_COLOR))#9
     course.append(Plat((course[8].x-180,course[8].y), 100, PLAT_SIZE, "norm",PLATFORM_COLOR))#10
     course.append(Plat((course[8].x+100,course[8].y), 130, PLAT_SIZE, "norm",PLATFORM_COLOR))#11
-    course.append(Plat((course[11].x+115,course[11].y-140), PLAT_SIZE, 140, "norm",PLATFORM_COLOR))#12
+    course.append(Plat((course[11].x+105,course[11].y-140), PLAT_SIZE, 140, "norm",PLATFORM_COLOR))#12
     course.append(Plat((course[12].x-20,course[12].y+80), 30, PLAT_SIZE, "norm",PLATFORM_COLOR))#13
     course.append(Plat((course[13].x-70,course[13].y-110), PLAT_SIZE, 130, "norm",PLATFORM_COLOR))#14
     course.append(Plat((course[14].x+15,course[14].y+65), 20, PLAT_SIZE, "norm",PLATFORM_COLOR))#15
@@ -228,7 +228,7 @@ def Main_Course():
     course.append(Plat((course[23].x+55,course[23].y-30), 20, PLAT_SIZE, "norm",PLATFORM_COLOR))#24
     course.append(Plat((course[24].x-70,course[24].y-40), 25, PLAT_SIZE, "norm",PLATFORM_COLOR))#25
     course.append(Plat((course[25].x-70,course[25].y-40), 20, PLAT_SIZE, "norm",PLATFORM_COLOR))#26
-    course.append(Plat((course[26].x-60,course[26].y-40), PLAT_SIZE, PLAT_SIZE, "norm",PLATFORM_COLOR))#27
+    course.append(Plat((course[26].x-60,course[26].y-40), PLAT_SIZE+20, PLAT_SIZE, "norm",PLATFORM_COLOR))#27
     course.append(Plat((course[27].x-50,course[27].y+40), PLAT_SIZE, PLAT_SIZE, "norm",PLATFORM_COLOR))#28
     course.append(Plat((course[28].x-80,course[28].y+50),PLAT_SIZE,PLAT_SIZE,"end", (255,0,0))) #29 end
 
