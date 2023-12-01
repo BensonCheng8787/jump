@@ -188,7 +188,7 @@ while running:
                         course = 3
                         platforms = main_course
                         player = Player(0, 0, 30, PLAYER_COLOR)
-                        player.cirRad = 60
+                        player.cirRad = 85
                         player.change_jump(12)
                         player.reset(course)
                         
