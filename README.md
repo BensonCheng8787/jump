@@ -1,4 +1,8 @@
 # jump
 repo for jump?
-This branch is for the new develoment of jump,
-which is now running with python instead of html and javascript.
+Project Lead Developer: Tyler Layton
+Software Development Lead: Benson Cheng
+
+This game is code in python using the pygame library. The game creates a transparent background where the windows behind the game window can still be seen. 
+This can me used in zoom meetings, when watching videos, or if you are just bored. The player must control the character to jump to the next platform 
+and complete the level. Future updates coming soon!
